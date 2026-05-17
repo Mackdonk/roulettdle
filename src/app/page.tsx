@@ -17,8 +17,6 @@ import { useCallback, useEffect, useRef, useState, startTransition } from "react
 
 import { getOrCreatePlayerKey } from "@/lib/playerKey";
 
-import { Analytics } from "@vercel/analytics/react";
-
 const SPIN_DURATION_MS = 800;
 
 type ScoreRow = {
@@ -76,12 +74,20 @@ function LeaderboardPanel({
 
       <ScrollArea
         type="auto"
-        offsetScrollbars
+        scrollbars="y"
+        offsetScrollbars="present"
+        scrollbarSize={12}
         mt="md"
         flex={fillHeight ? 1 : undefined}
         style={fillHeight ? { flex: 1, minHeight: 0 } : undefined}
         styles={{
-          viewport: { paddingRight: 4 },
+          root: {
+            marginRight: "calc(-1 * var(--mantine-spacing-lg))",
+            width: "calc(100% + var(--mantine-spacing-lg))",
+          },
+          viewport: {
+            paddingRight: "var(--mantine-spacing-xl)",
+          },
         }}
       >
         {leaderboardLoading ? (
@@ -114,7 +120,8 @@ function LeaderboardPanel({
                 justify="space-between"
                 align="center"
                 gap="md"
-                px="sm"
+                pl="sm"
+                pr="md"
                 py={10}
                 wrap="nowrap"
                 style={{
@@ -141,6 +148,7 @@ function LeaderboardPanel({
                   fw={700}
                   c="gold.3"
                   fz="sm"
+                  mr="sm"
                   style={{ fontVariantNumeric: "tabular-nums" }}
                 >
                   {row.score.toLocaleString()}
@@ -325,25 +333,34 @@ export default function Home() {
                   </Text>
 
                   <Box
-                    className={spinning ? "spin-once" : undefined}
                     mx="auto"
                     style={{
-                      width: "7.5rem",
-                      height: "7.5rem",
-                      borderRadius: "9999px",
-                      border: "8px dashed var(--foreground)",
-                      opacity: 0.9,
+                      position: "relative",
+                      width: "15rem",
+                      height: "15rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
-                  />
-
-                  <Box ta="center" style={{ minHeight: "2.75rem" }}>
+                  >
+                    <Box
+                      className={spinning ? "spin-once" : undefined}
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        borderRadius: "9999px",
+                        border: "12px dashed var(--foreground)",
+                        opacity: 0.9,
+                        pointerEvents: "none",
+                      }}
+                    />
                     {!spinning && lastResult ? (
                       <Text
-                        fz="2rem"
+                        fz="2.75rem"
                         fw={900}
                         c={lastResult === "W" ? "felt.4" : "red.6"}
-                        ta="inherit"
-                        component="span"
+                        ta="center"
+                        style={{ position: "relative", zIndex: 1, lineHeight: 1 }}
                       >
                         {lastResult}
                       </Text>
