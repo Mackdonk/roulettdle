@@ -17,7 +17,7 @@ import { useCallback, useEffect, useRef, useState, startTransition } from "react
 
 import { getOrCreatePlayerKey } from "@/lib/playerKey";
 
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react";
 
 const SPIN_DURATION_MS = 800;
 
